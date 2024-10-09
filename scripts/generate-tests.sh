@@ -270,7 +270,8 @@ tools/generate-prelu-test.py --spec test/f32-prelu.yaml --output test/f32-prelu.
 tools/generate-raddexpminusmax-test.py --spec test/f32-raddexpminusmax.yaml --output test/f32-raddexpminusmax.cc &
 
 ### Tests for RAddExtExp micro-kernels
-tools/generate-raddextexp-test.py --spec test/f32-raddextexp.yaml --output test/f32-raddextexp.cc &
+# tools/generate-raddextexp-test.py --spec test/f32-raddextexp.yaml --output test/f32-raddextexp.cc &
+tools/generate-raddextexp-test.py --tester RAddExtExpMicrokernelTester --ukernel f32-raddextexp --output test/f32-raddextexp.cc &
 
 ### Tests for RAddStoreExpMinusMax micro-kernels
 tools/generate-raddstoreexpminusmax-test.py --spec test/f16-raddstoreexpminusmax.yaml --output test/f16-raddstoreexpminusmax.cc &
