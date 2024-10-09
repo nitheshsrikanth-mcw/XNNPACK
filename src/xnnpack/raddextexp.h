@@ -20,6 +20,13 @@ extern "C" {
       const float* input,                                \
       float* sum);
 
+#define XNN_UKERNEL_WITH_PARAMS(arch_flags, ukernel, element_tile, datatype, params_type, init_params)
+  XNN_INTERNAL void ukernel(                                                  \
+      size_t n,const float* input,                                \
+      float* sum);
+#include "src/f32-raddextexp/f32-raddextexp.h"
+#undef XNN_UKERNEL_WITH_PARAMS
+
 DECLARE_F32_RADDEXTEXP_UKERNEL_FUNCTION(xnn_f32_raddextexp_ukernel__avx2_p5_u64)
 DECLARE_F32_RADDEXTEXP_UKERNEL_FUNCTION(xnn_f32_raddextexp_ukernel__avx2_p5_u64_acc2)
 DECLARE_F32_RADDEXTEXP_UKERNEL_FUNCTION(xnn_f32_raddextexp_ukernel__avx2_p5_u64_acc4)

@@ -59,6 +59,7 @@ exports_files(["LICENSE"])
 exports_files(["preamble.js.lds"])
 
 MICROKERNEL_DEFS = [
+    "src/f32-radddextexp/f32-radddextexp.h",
     "src/bf16-vabs/bf16-vabs.h",
     "src/f16-avgpool/f16-avgpool-minmax.h",
     "src/f16-dwconv/f16-dwconv-minmax-multipass.h",

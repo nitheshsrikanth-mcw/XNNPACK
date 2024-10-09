@@ -9,7 +9,6 @@
 
 #include <assert.h>
 #include <math.h>
-
 #include <immintrin.h>
 
 #include "xnnpack/raddextexp.h"

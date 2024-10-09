@@ -71,3 +71,38 @@ class RAddExtExpMicrokernelTester {
   size_t elements_{1};
   size_t iterations_{15};
 };
+
+
+ #define XNN_TEST_RADDEXTEXP_BATCH_EQ(ukernel,arch_flags, element_tile, ...)                                                \
+  TEST(ukernel, batch_eq) {                                                                          \
+    RAddExtExpMicrokernelTester()                                                                    \
+      .elements(element_tile)                                                                          \
+      .Test(ukernel);                                                                              \
+  }
+
+#define XNN_TEST_RADDEXTEXP_BATCH_DIV(ukernel,arch_flags, element_tile, ...)                                                 \
+  TEST(ukernel, batch_gt) {                                                                            \
+    for (size_t batch_size = element_tile + 1; batch_size < 2 * element_tile; batch_size++) {              \
+      RAddExtExpMicrokernelTester()                                                                  \
+        .elements(batch_size)                                                                        \
+        .Test(ukernel);                                                                            \
+    }                                                                                                  \
+  }
+
+#define XNN_TEST_RADDEXTEXP_BATCH_LT(ukernel,arch_flags, element_tile, ...)                                                 \
+ TEST(ukernel, batch_lt) {                                                                             \
+    for (size_t batch_size =  1; batch_size < element_tile; batch_size++) {                              \
+      RAddExtExpMicrokernelTester()                                                                  \
+        .elements(batch_size)                                                                        \
+        .Test(ukernel);                                                                            \
+    }                                                                                                  \
+  }
+
+#define XNN_TEST_RADDEXTEXP_BATCH_GT(ukernel,arch_flags, element_tile, ...)                                                \
+ TEST(ukernel, batch_div) {                                                                            \
+    for (size_t batch_size =  2 * element_tile; batch_size < 10 * element_tile; batch_size+= element_tile) { \
+      RAddExtExpMicrokernelTester()                                                                  \
+        .elements(batch_size)                                                                        \
+        .Test(ukernel);                                                                            \
+    }                                                                                                  \
+  }
