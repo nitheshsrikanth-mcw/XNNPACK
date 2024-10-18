@@ -24,6 +24,14 @@ extern "C" {
       xnn_float16* sum,                                                   \
       const struct xnn_f16_expminus_params params[XNN_RESTRICT XNN_MIN_ELEMENTS(1)]);
 
+  #define XNN_UKERNEL_WITH_PARAMS(arch_flags, ukernel, element_tile, datatype, params_type, init_params)
+  XNN_INTERNAL void ukernel(                                                  \
+      size_t n,const float* input,                                \
+      const float* max, xnn_float16* output,xnn_float16* sum,const struct xnn_f16_expminus_params params[XNN_RESTRICT XNN_MIN_ELEMENTS(1)]);
+#include "src/f16-raddstoreexpminusmax/f16-raddstoreexpminusmax.h"
+#include "src/f32-raddstoreexpminusmax/f32-raddstoreexpminusmax.h"
+#undef XNN_UKERNEL_WITH_PARAMS
+
 DECLARE_F16_RADDSTOREEXPMINUSMAX_UKERNEL_FUNCTION(xnn_f16_raddstoreexpminusmax_ukernel__avx2_rr1_p2_u16)
 DECLARE_F16_RADDSTOREEXPMINUSMAX_UKERNEL_FUNCTION(xnn_f16_raddstoreexpminusmax_ukernel__avx2_rr1_p2_u16_acc2)
 DECLARE_F16_RADDSTOREEXPMINUSMAX_UKERNEL_FUNCTION(xnn_f16_raddstoreexpminusmax_ukernel__avx2_rr1_p2_u32)
