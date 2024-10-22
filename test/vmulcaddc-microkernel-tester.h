@@ -13,7 +13,7 @@
 #include <cstdlib>
 #include <random>
 #include <vector>
-
+#include<iostream>
 #include <gtest/gtest.h>
 #include "xnnpack.h"
 #include "xnnpack/aligned-allocator.h"
@@ -139,9 +139,9 @@ class VMulCAddCMicrokernelTester {
 
       std::fill(packed_w.begin(), packed_w.end(), std::nanf(""));
       xnn_pack_f16_vmulcaddc_w(channels(), channel_tile(),
-                               reinterpret_cast<const uint16_t*>(scale.data()), 
-                               reinterpret_cast<const uint16_t*>(bias.data()), 
-                               reinterpret_cast<uint16_t*>(packed_w.data()), 
+                               reinterpret_cast<const uint16_t*>(scale.data()),
+                               reinterpret_cast<const uint16_t*>(bias.data()),
+                               reinterpret_cast<uint16_t*>(packed_w.data()),
                                nullptr);
 
       // Compute reference results.
@@ -183,6 +183,7 @@ class VMulCAddCMicrokernelTester {
   }
 
   void Test(xnn_f32_vmulcaddc_ukernel_fn vmulcaddc, xnn_init_f32_minmax_params_fn init_params) const {
+    std::cout<<"entered test"<<std::endl;
     xnnpack::ReplicableRandomDevice rng;
     std::uniform_real_distribution<float> f32dist;
 
@@ -210,13 +211,15 @@ class VMulCAddCMicrokernelTester {
       std::fill(packed_w.begin(), packed_w.end(), nanf(""));
       xnn_pack_f32_vmulcaddc_w(channels(), channel_tile(),
         scale.data(), bias.data(), packed_w.data(), nullptr);
-
+std::cout<<"before t1"<<std::endl;
       // Compute reference results.
       for (size_t i = 0; i < rows(); i++) {
         for (size_t j = 0; j < channels(); j++) {
           y_ref[i * channels() + j] = x_data[i * input_stride() + j] * scale[j] + bias[j];
         }
       }
+      std::cout<<"before t4"<<std::endl;
+
       const float accumulated_min = *std::min_element(y_ref.cbegin(), y_ref.cend());
       const float accumulated_max = *std::max_element(y_ref.cbegin(), y_ref.cend());
       const float accumulated_range = accumulated_max - accumulated_min;
@@ -225,18 +228,25 @@ class VMulCAddCMicrokernelTester {
       for (float& y_value : y_ref) {
         y_value = std::max<float>(std::min<float>(y_value, y_max), y_min);
       }
-
+std::cout<<"before t5"<<std::endl;
       // Prepare parameters.
-      xnn_f32_minmax_params params;
-      init_params(&params, y_min, y_max);
+      std::cout<<"y min"<<y_min<<std::endl;
+      std::cout<<"y max"<<y_max<<std::endl;
 
+      xnn_f32_minmax_params params;
+      params.scalar.max=y_max;
+      std::cout<<"params max"<<params.scalar.max<<std::endl;
+      std::cout<<"init =="<<(init_params==nullptr)<<std::endl;
+      init_params(&params, y_min, y_max);
+      
+std::cout<<"entered t2"<<std::endl;
       // Call optimized micro-kernel.
       vmulcaddc(rows(), channels() * sizeof(float),
         x_data, input_stride() * sizeof(float),
         packed_w.data(),
         y.data(), output_stride() * sizeof(float),
         &params);
-
+std::cout<<"entered test3"<<std::endl;
       // Verify results.
       for (size_t i = 0; i < rows(); i++) {
         for (size_t j = 0; j < channels(); j++) {
@@ -259,3 +269,37 @@ class VMulCAddCMicrokernelTester {
   uint8_t qmax_{255};
   size_t iterations_{15};
 };
+
+#define XNN_TEST_VMULCADDC_ROW_EQ(ukernel,arch_flags, row_tile, vector_tile,datatype, params_type, init_params)               \
+  TEST(ukernel, ROW_eq) {                                                                       \
+    VMulCAddCMicrokernelTester()                                                                \
+    .rows(row_tile)                                                                             \
+    .Test(ukernel,init_params);                                                                             \
+  }
+// #define XNN_TEST_VMULCADDC_ROW_DIV(ukernel,arch_flags, row_tile, channel_tile ...)                                                 \
+//   TEST(ukernel, ROW_gt) {                                                                            \
+//     for (size_t ROW_size = row_tile + 1; ROW_size < 2 * row_tile; ROW_size++) {              \
+//       VMulCAddCMicrokernelTester()  \
+//       .channel_tile(channel_tile)                                                                   \
+//         .rows(ROW_size)                                                                           \
+//         .Test(ukernel);                                                                            \
+//     }\
+//   }
+// #define XNN_TEST_VMULCADDC_ROW_LT(ukernel,arch_flags, row_tile, channel_tile ...)                                                 \
+//  TEST(ukernel, ROW_lt) {                                                                             \
+//     for (size_t ROW_size =  1; ROW_size < row_tile; ROW_size++) {                              \
+//       VMulCAddCMicrokernelTester()    \
+//       .channel_tile(channel_tile)                                                              \
+//         .rows(ROW_size)                                                                             \
+//         .Test(ukernel);                                                                            \
+//     }\
+//   }
+// #define XNN_TEST_VMULCADDC_ROW_GT(ukernel,arch_flags, row_tile, channel_tile ...)                                                 
+//  TEST(ukernel, ROW_div) {                                                                            
+//     for (size_t ROW_size =  2 * row_tile; ROW_size < 10 * row_tile; ROW_size+= row_tile) { 
+//       VMulCAddCMicrokernelTester()     
+//                .channel_tile(channel_tile)                                                    
+//         .rows(ROW_size)                                                                                   
+//         .Test(ukernel);                                                                            
+//     }
+//   }
