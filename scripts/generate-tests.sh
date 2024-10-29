@@ -273,8 +273,8 @@ tools/generate-raddexpminusmax-test.py --spec test/f32-raddexpminusmax.yaml --ou
 tools/generate-raddextexp-test.py --spec test/f32-raddextexp.yaml --output test/f32-raddextexp.cc &
 
 ### Tests for RAddStoreExpMinusMax micro-kernels
-tools/generate-raddstoreexpminusmax-test.py --spec test/f16-raddstoreexpminusmax.yaml --output test/f16-raddstoreexpminusmax.cc &
-tools/generate-raddstoreexpminusmax-test.py --spec test/f32-raddstoreexpminusmax.yaml --output test/f32-raddstoreexpminusmax.cc &
+tools/generate-raddstoreexpminusmax-test.py --tester RAddStoreExpMinusMaxMicrokernelTester --ukernel f32-raddstoreexpminusmax --output test/f32-raddstoreexpminusmax.cc &
+tools/generate-raddstoreexpminusmax-test.py --tester RAddStoreExpMinusMaxMicrokernelTester --ukernel f16-raddstoreexpminusmax --output test/f16-raddstoreexpminusmax.cc &
 
 ### Tests for VScaleExtExp micro-kernels
 tools/generate-vscaleextexp-test.py --spec test/f32-vscaleextexp.yaml --output test/f32-vscaleextexp.cc &
