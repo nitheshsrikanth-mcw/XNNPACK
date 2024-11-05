@@ -40,7 +40,7 @@ def split_ukernel_name(name):
   return elements_tile, arch, isa
 
 VMULCADDC_TEST_TEMPLATE = """\
-#define XNN_UKERNEL_WITH_PARAMS(arch_flags, ukernel, row_tile,vector_tile, datatype, params_type, init_params) \
+#define XNN_UKERNEL_WITH_PARAMS(arch_flags, ukernel, row_tile,channel_tile, datatype, params_type, init_params) \
 XNN_TEST_VMULCADDC_ROW_DIV(ukernel,arch_flags,  ${", ".join(TEST_ARGS)});
 XNN_TEST_VMULCADDC_ROW_LT(ukernel,arch_flags,  ${", ".join(TEST_ARGS)});
 XNN_TEST_VMULCADDC_ROW_GT(ukernel,arch_flags,  ${", ".join(TEST_ARGS)});
@@ -86,11 +86,10 @@ def main(args):
     datatype = ukernel_parts[0]
     op = ukernel_parts[1]
     test_args = ["row_tile"]
-    test_args.append("vector_tile")
+    test_args.append("channel_tile")
     test_args.append("datatype")
     test_args.append("params_type")
     test_args.append("init_params")
-    print("test args",test_args)
     tests += xnncommon.make_multiline_macro(xngen.preprocess(
       VMULCADDC_TEST_TEMPLATE,
       {
@@ -100,7 +99,6 @@ def main(args):
       },
   ))
     folder = datatype + "-" + ("vmulcaddc" if datatype.startswith("f") else op)
-    print("options",options.ukernel)
     tests += f'#include "{xnncommon._XNNPACK_SRC}/{folder}/{options.ukernel}.h"\n'
     tests += "#undef XNN_UKERNEL_WITH_PARAMS\n"
 

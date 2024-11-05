@@ -252,13 +252,13 @@ private:
   size_t iterations_{15};
 };
 
-#define XNN_TEST_VMULCADDC_ROW_DIV(ukernel, arch_flags, row_tile, vector_tile, datatype, params_type, init_params)     \
+#define XNN_TEST_VMULCADDC_ROW_DIV(ukernel, arch_flags, row_tile, channels_tile, datatype, params_type, init_params)     \
   TEST(ukernel, ROW_div)                                                                                               \
   {                                                                                                                    \
     for (size_t rows = row_tile * 2; rows <= row_tile * 4; rows += row_tile) {                                         \
-      for (size_t channels = 1; channels <= vector_tile * 5; channels += std::max(1, vector_tile - 1)) {               \
+      for (size_t channels = 1; channels <= channels_tile * 5; channels += std::max(1, channels_tile - 1)) {               \
         VMulCAddCMicrokernelTester()                                                                                   \
-          .channel_tile(vector_tile)                                                                                   \
+          .channel_tile(channels_tile)                                                                                   \
           .channels(channels)                                                                                          \
           .rows(rows)                                                                                                  \
           .Test(ukernel, init_params);                                                                                 \
@@ -266,13 +266,13 @@ private:
     }                                                                                                                  \
   }
 
-#define XNN_TEST_VMULCADDC_ROW_LT(ukernel, arch_flags, row_tile, vector_tile, datatype, params_type, init_params)      \
+#define XNN_TEST_VMULCADDC_ROW_LT(ukernel, arch_flags, row_tile, channels_tile, datatype, params_type, init_params)      \
   TEST(ukernel, ROW_lt)                                                                                                \
   {                                                                                                                    \
     for (size_t rows = 1; rows < row_tile; rows++) {                                                                   \
-      for (size_t channels = 1; channels <= vector_tile * 5; channels += std::max(1, vector_tile - 1)) {               \
+      for (size_t channels = 1; channels <= channels_tile * 5; channels += std::max(1, channels_tile - 1)) {               \
         VMulCAddCMicrokernelTester()                                                                                   \
-          .channel_tile(vector_tile)                                                                                   \
+          .channel_tile(channels_tile)                                                                                   \
           .channels(channels)                                                                                          \
           .rows(rows)                                                                                                  \
           .Test(ukernel, init_params);                                                                                 \
@@ -280,13 +280,13 @@ private:
     }                                                                                                                  \
   }
 
-#define XNN_TEST_VMULCADDC_ROW_GT(ukernel, arch_flags, row_tile, vector_tile, datatype, params_type, init_params)      \
+#define XNN_TEST_VMULCADDC_ROW_GT(ukernel, arch_flags, row_tile, channels_tile, datatype, params_type, init_params)      \
   TEST(ukernel, ROW_gt)                                                                                                \
   {                                                                                                                    \
     for (size_t rows = row_tile + 1; rows < row_tile * 2; rows++) {                                                    \
-      for (size_t channels = 1; channels <= vector_tile * 5; channels += std::max(1, vector_tile - 1)) {               \
+      for (size_t channels = 1; channels <= channels_tile * 5; channels += std::max(1, channels_tile - 1)) {               \
         VMulCAddCMicrokernelTester()                                                                                   \
-          .channel_tile(vector_tile)                                                                                   \
+          .channel_tile(channels_tile)                                                                                   \
           .channels(channels)                                                                                          \
           .rows(rows)                                                                                                  \
           .Test(ukernel, init_params);                                                                                 \
@@ -294,46 +294,46 @@ private:
     }                                                                                                                  \
   }
 
-#define XNN_TEST_VMULCADDC_CHANNEL_GT(ukernel, arch_flags, row_tile, vector_tile, datatype, params_type, init_params)  \
+#define XNN_TEST_VMULCADDC_CHANNEL_GT(ukernel, arch_flags, row_tile, channels_tile, datatype, params_type, init_params)  \
   TEST(ukernel, channels_gt_)                                                                                          \
   {                                                                                                                    \
-    for (size_t channels = vector_tile + 1; channels < (vector_tile == 1 ? 10 : vector_tile * 2); channels++) {        \
+    for (size_t channels = channels_tile + 1; channels < (channels_tile == 1 ? 10 : channels_tile * 2); channels++) {        \
       VMulCAddCMicrokernelTester()                                                                                     \
-        .channel_tile(vector_tile)                                                                                     \
+        .channel_tile(channels_tile)                                                                                     \
         .channels(channels)                                                                                            \
         .rows(row_tile)                                                                                                \
         .Test(ukernel, init_params);                                                                                   \
     }                                                                                                                  \
   }
 
-#define XNN_TEST_VMULCADDC_CHANNEL_EQ(ukernel, arch_flags, row_tile, vector_tile, datatype, params_type, init_params)  \
+#define XNN_TEST_VMULCADDC_CHANNEL_EQ(ukernel, arch_flags, row_tile, channels_tile, datatype, params_type, init_params)  \
   TEST(ukernel, channels_eq_)                                                                                          \
   {                                                                                                                    \
     VMulCAddCMicrokernelTester()                                                                                       \
-      .channel_tile(vector_tile)                                                                                       \
-      .channels(vector_tile)                                                                                           \
+      .channel_tile(channels_tile)                                                                                       \
+      .channels(channels_tile)                                                                                           \
       .rows(row_tile)                                                                                                  \
       .Test(ukernel, init_params);                                                                                     \
   }
 
-#define XNN_TEST_VMULCADDC_CHANNEL_DIV(ukernel, arch_flags, row_tile, vector_tile, datatype, params_type, init_params) \
+#define XNN_TEST_VMULCADDC_CHANNEL_DIV(ukernel, arch_flags, row_tile, channels_tile, datatype, params_type, init_params) \
   TEST(ukernel, channels_div_)                                                                                         \
   {                                                                                                                    \
-    for (size_t channels = vector_tile * 2; channels < vector_tile * 10; channels += vector_tile) {                    \
+    for (size_t channels = channels_tile * 2; channels < channels_tile * 10; channels += channels_tile) {                    \
       VMulCAddCMicrokernelTester()                                                                                     \
-        .channel_tile(vector_tile)                                                                                     \
+        .channel_tile(channels_tile)                                                                                     \
         .channels(channels)                                                                                            \
         .rows(row_tile)                                                                                                \
         .Test(ukernel, init_params);                                                                                   \
     }                                                                                                                  \
   }
 
-#define XNN_TEST_VMULCADDC_CHANNEL_LT(ukernel, arch_flags, row_tile, vector_tile, datatype, params_type, init_params)  \
+#define XNN_TEST_VMULCADDC_CHANNEL_LT(ukernel, arch_flags, row_tile, channels_tile, datatype, params_type, init_params)  \
   TEST(ukernel, channels_lt_)                                                                                          \
   {                                                                                                                    \
-    for (size_t channels = 1; channels < vector_tile; channels++) {                                                    \
+    for (size_t channels = 1; channels < channels_tile; channels++) {                                                    \
       VMulCAddCMicrokernelTester()                                                                                     \
-        .channel_tile(vector_tile)                                                                                     \
+        .channel_tile(channels_tile)                                                                                     \
         .channels(channels)                                                                                            \
         .rows(row_tile)                                                                                                \
         .Test(ukernel, init_params);                                                                                   \
@@ -341,45 +341,45 @@ private:
   }
 
 #define XNN_TEST_VMULCADDC_INPUT_STRIDE(                                                                               \
-  ukernel, arch_flags, row_tile, vector_tile, datatype, params_type, init_params)                                      \
+  ukernel, arch_flags, row_tile, channels_tile, datatype, params_type, init_params)                                      \
   TEST(ukernel, input_stride)                                                                                          \
   {                                                                                                                    \
     for (size_t rows = 1; rows <= row_tile * 3; rows += std::max(1, row_tile - 1)) {                                   \
-      for (size_t channels = 1; channels <= vector_tile * 5; channels += std::max(1, vector_tile - 1)) {               \
+      for (size_t channels = 1; channels <= channels_tile * 5; channels += std::max(1, channels_tile - 1)) {               \
         VMulCAddCMicrokernelTester()                                                                                   \
-          .channel_tile(vector_tile)                                                                                   \
+          .channel_tile(channels_tile)                                                                                   \
           .channels(channels)                                                                                          \
           .rows(rows)                                                                                                  \
-          .input_stride(xnnpack::NextPrime(vector_tile * 5 + 1))                                                       \
+          .input_stride(xnnpack::NextPrime(channels_tile * 5 + 1))                                                       \
           .Test(ukernel, init_params);                                                                                 \
       }                                                                                                                \
     }                                                                                                                  \
   }
 
 #define XNN_TEST_VMULCADDC_OUTPUT_STRIDE(                                                                              \
-  ukernel, arch_flags, row_tile, vector_tile, datatype, params_type, init_params)                                      \
+  ukernel, arch_flags, row_tile, channels_tile, datatype, params_type, init_params)                                      \
   TEST(ukernel, output_stride)                                                                                         \
   {                                                                                                                    \
     for (size_t rows = 1; rows <= row_tile * 3; rows += std::max(1, row_tile - 1)) {                                   \
-      for (size_t channels = 1; channels <= vector_tile * 5; channels += std::max(1, vector_tile - 1)) {               \
+      for (size_t channels = 1; channels <= channels_tile * 5; channels += std::max(1, channels_tile - 1)) {               \
         VMulCAddCMicrokernelTester()                                                                                   \
-          .channel_tile(vector_tile)                                                                                   \
+          .channel_tile(channels_tile)                                                                                   \
           .channels(channels)                                                                                          \
           .rows(rows)                                                                                                  \
-          .output_stride(xnnpack::NextPrime(vector_tile * 5 + 1))                                                      \
+          .output_stride(xnnpack::NextPrime(channels_tile * 5 + 1))                                                      \
           .Test(ukernel, init_params);                                                                                 \
       }                                                                                                                \
     }                                                                                                                  \
   }
 
 
-#define XNN_TEST_VMULCADDC_INPLACE(ukernel, arch_flags, row_tile, vector_tile, datatype, params_type, init_params)     \
+#define XNN_TEST_VMULCADDC_INPLACE(ukernel, arch_flags, row_tile, channels_tile, datatype, params_type, init_params)     \
   TEST(ukernel, inplace)                                                                                               \
   {                                                                                                                    \
     for (size_t rows = 1; rows <= row_tile * 3; rows += std::max(1, row_tile - 1)) {                                   \
-      for (size_t channels = 1; channels <= vector_tile * 5; channels += std::max(1, vector_tile - 1)) {               \
+      for (size_t channels = 1; channels <= channels_tile * 5; channels += std::max(1, channels_tile - 1)) {               \
         VMulCAddCMicrokernelTester()                                                                                   \
-          .channel_tile(vector_tile)                                                                                   \
+          .channel_tile(channels_tile)                                                                                   \
           .channels(channels)                                                                                          \
           .rows(rows)                                                                                                  \
           .inplace(true)                                                                                               \
@@ -388,13 +388,13 @@ private:
     }                                                                                                                  \
   }
 
-#define XNN_TEST_VMULCADDC_QMIN(ukernel, arch_flags, row_tile, vector_tile, datatype, params_type, init_params)        \
+#define XNN_TEST_VMULCADDC_QMIN(ukernel, arch_flags, row_tile, channels_tile, datatype, params_type, init_params)        \
   TEST(ukernel, qmin)                                                                                                  \
   {                                                                                                                    \
     for (size_t rows = 1; rows <= row_tile * 3; rows += std::max(1, row_tile - 1)) {                                   \
-      for (size_t channels = 1; channels <= vector_tile * 5; channels += std::max(1, vector_tile - 1)) {               \
+      for (size_t channels = 1; channels <= channels_tile * 5; channels += std::max(1, channels_tile - 1)) {               \
         VMulCAddCMicrokernelTester()                                                                                   \
-          .channel_tile(vector_tile)                                                                                   \
+          .channel_tile(channels_tile)                                                                                   \
           .channels(channels)                                                                                          \
           .rows(rows)                                                                                                  \
           .qmin(128)                                                                                                   \
@@ -403,13 +403,13 @@ private:
     }                                                                                                                  \
   }
 
-#define XNN_TEST_VMULCADDC_QMAX(ukernel, arch_flags, row_tile, vector_tile, datatype, params_type, init_params)        \
+#define XNN_TEST_VMULCADDC_QMAX(ukernel, arch_flags, row_tile, channels_tile, datatype, params_type, init_params)        \
   TEST(ukernel, qmax)                                                                                                  \
   {                                                                                                                    \
     for (size_t rows = 1; rows <= row_tile * 3; rows += std::max(1, row_tile - 1)) {                                   \
-      for (size_t channels = 1; channels <= vector_tile * 5; channels += std::max(1, vector_tile - 1)) {               \
+      for (size_t channels = 1; channels <= channels_tile * 5; channels += std::max(1, channels_tile - 1)) {               \
         VMulCAddCMicrokernelTester()                                                                                   \
-          .channel_tile(vector_tile)                                                                                   \
+          .channel_tile(channels_tile)                                                                                   \
           .channels(channels)                                                                                          \
           .rows(rows)                                                                                                  \
           .qmax(128)                                                                                                   \
