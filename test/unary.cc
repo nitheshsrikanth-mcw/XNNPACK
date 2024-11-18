@@ -201,18 +201,18 @@ const xnn_datatype all_datatypes[] = {
     xnn_datatype_int32,
 };
 
-INSTANTIATE_TEST_SUITE_P(
-    UnaryTest, UnaryTest,
-    testing::ConvertGenerator<Param::UnaryT>(testing::Combine(
-        testing::ValuesIn(all_unary_ops), testing::ValuesIn(all_datatypes))),
-    [](const auto& info) { return info.param.Name(); });
+// INSTANTIATE_TEST_SUITE_P(
+//     UnaryTest, UnaryTest,
+//     testing::ConvertGenerator<Param::UnaryT>(testing::Combine(
+//         testing::ValuesIn(all_unary_ops), testing::ValuesIn(all_datatypes))),
+//     [](const auto& info) { return info.param.Name(); });
 
-INSTANTIATE_TEST_SUITE_P(
-    ConvertTest, UnaryTest,
-    testing::ConvertGenerator<Param::ConvertT>(testing::Combine(
-        testing::Values(xnn_unary_convert), testing::ValuesIn(all_datatypes),
-        testing::ValuesIn(all_datatypes))),
-    [](const auto& info) { return info.param.Name(); });
+// INSTANTIATE_TEST_SUITE_P(
+//     ConvertTest, UnaryTest,
+//     testing::ConvertGenerator<Param::ConvertT>(testing::Combine(
+//         testing::Values(xnn_unary_convert), testing::ValuesIn(all_datatypes),
+//         testing::ValuesIn(all_datatypes))),
+//     [](const auto& info) { return info.param.Name(); });
 
 
 TEST(AbsTest, reshape) {

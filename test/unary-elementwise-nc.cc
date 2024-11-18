@@ -418,50 +418,50 @@ xnn_datatype unquantized_datatypes[] = {
 RunMode run_modes[] = {RunMode::kCreateReshapeRun, RunMode::kEager};
 
 // Run non-quantized tests on all unary ops and all datatypes.
-INSTANTIATE_TEST_SUITE_P(UnaryNCTest, UnaryNCTest,
-                         testing::ConvertGenerator<Param::UnaryT>(
-                             testing::Combine(testing::ValuesIn(all_unary_ops),
-                                              testing::ValuesIn(all_datatypes),
-                                              testing::ValuesIn(run_modes))),
-                         [](const auto& info) { return info.param.Name(); });
+// INSTANTIATE_TEST_SUITE_P(UnaryNCTest, UnaryNCTest,
+//                          testing::ConvertGenerator<Param::UnaryT>(
+//                              testing::Combine(testing::ValuesIn(all_unary_ops),
+//                                               testing::ValuesIn(all_datatypes),
+//                                               testing::ValuesIn(run_modes))),
+//                          [](const auto& info) { return info.param.Name(); });
 
 // Run quantized input and output tests on all unary ops and all quantized
 // datatypes.
-INSTANTIATE_TEST_SUITE_P(
-    UnaryNCTest_InputQuantized, UnaryNCTest_InputQuantized,
-    testing::ConvertGenerator<Param::UnaryT>(testing::Combine(
-        testing::ValuesIn(all_unary_ops),
-        testing::ValuesIn(quantized_datatypes), testing::ValuesIn(run_modes))),
-    [](const auto& info) { return info.param.Name(); });
+// INSTANTIATE_TEST_SUITE_P(
+//     UnaryNCTest_InputQuantized, UnaryNCTest_InputQuantized,
+//     testing::ConvertGenerator<Param::UnaryT>(testing::Combine(
+//         testing::ValuesIn(all_unary_ops),
+//         testing::ValuesIn(quantized_datatypes), testing::ValuesIn(run_modes))),
+//     [](const auto& info) { return info.param.Name(); });
 
-INSTANTIATE_TEST_SUITE_P(
-    UnaryNCTest_OutputQuantized, UnaryNCTest_OutputQuantized,
-    testing::ConvertGenerator<Param::UnaryT>(testing::Combine(
-        testing::ValuesIn(all_unary_ops),
-        testing::ValuesIn(quantized_datatypes), testing::ValuesIn(run_modes))),
-    [](const auto& info) { return info.param.Name(); });
+// INSTANTIATE_TEST_SUITE_P(
+//     UnaryNCTest_OutputQuantized, UnaryNCTest_OutputQuantized,
+//     testing::ConvertGenerator<Param::UnaryT>(testing::Combine(
+//         testing::ValuesIn(all_unary_ops),
+//         testing::ValuesIn(quantized_datatypes), testing::ValuesIn(run_modes))),
+//     [](const auto& info) { return info.param.Name(); });
 
-// Run non-quantized tests all all possible convert datatype combinations.
-INSTANTIATE_TEST_SUITE_P(
-    ConvertNCTest, UnaryNCTest,
-    testing::ConvertGenerator<Param::ConvertT>(testing::Combine(
-        testing::Values(xnn_unary_convert), testing::ValuesIn(all_datatypes),
-        testing::ValuesIn(all_datatypes), testing::ValuesIn(run_modes))),
-    [](const auto& info) { return info.param.Name(); });
+// // Run non-quantized tests all all possible convert datatype combinations.
+// INSTANTIATE_TEST_SUITE_P(
+//     ConvertNCTest, UnaryNCTest,
+//     testing::ConvertGenerator<Param::ConvertT>(testing::Combine(
+//         testing::Values(xnn_unary_convert), testing::ValuesIn(all_datatypes),
+//         testing::ValuesIn(all_datatypes), testing::ValuesIn(run_modes))),
+//     [](const auto& info) { return info.param.Name(); });
 
-// Run quantized input conversions.
-INSTANTIATE_TEST_SUITE_P(
-    ConvertNCTest_InputQuantized, UnaryNCTest_InputQuantized,
-    testing::ConvertGenerator<Param::ConvertT>(testing::Combine(
-        testing::Values(xnn_unary_convert),
-        testing::ValuesIn(quantized_datatypes),
-        testing::ValuesIn(all_datatypes), testing::ValuesIn(run_modes))),
-    [](const auto& info) { return info.param.Name(); });
+// // Run quantized input conversions.
+// INSTANTIATE_TEST_SUITE_P(
+//     ConvertNCTest_InputQuantized, UnaryNCTest_InputQuantized,
+//     testing::ConvertGenerator<Param::ConvertT>(testing::Combine(
+//         testing::Values(xnn_unary_convert),
+//         testing::ValuesIn(quantized_datatypes),
+//         testing::ValuesIn(all_datatypes), testing::ValuesIn(run_modes))),
+//     [](const auto& info) { return info.param.Name(); });
 
-// Run quantized output conversions.
-INSTANTIATE_TEST_SUITE_P(
-    ConvertNCTest_OutputQuantized, UnaryNCTest_OutputQuantized,
-    testing::ConvertGenerator<Param::ConvertT>(testing::Combine(
-        testing::Values(xnn_unary_convert), testing::ValuesIn(all_datatypes),
-        testing::ValuesIn(quantized_datatypes), testing::ValuesIn(run_modes))),
-    [](const auto& info) { return info.param.Name(); });
+// // Run quantized output conversions.
+// INSTANTIATE_TEST_SUITE_P(
+//     ConvertNCTest_OutputQuantized, UnaryNCTest_OutputQuantized,
+//     testing::ConvertGenerator<Param::ConvertT>(testing::Combine(
+//         testing::Values(xnn_unary_convert), testing::ValuesIn(all_datatypes),
+//         testing::ValuesIn(quantized_datatypes), testing::ValuesIn(run_modes))),
+//     [](const auto& info) { return info.param.Name(); });

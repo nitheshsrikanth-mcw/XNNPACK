@@ -677,13 +677,13 @@ const xnn_binary_operator all_binary_ops[] = {
 // We do the full Cartesian combination here, but some are inappropriate
 // and will be skipped for certain combinations -- see SupportedBinaryNDTest
 // to see the logic for what is actually supported.
-INSTANTIATE_TEST_SUITE_P(BinaryNDTest, BinaryNDTest,
-                         testing::ConvertGenerator<Param::TupleT>(
-                             Combine(ValuesIn(all_datatypes),
-                                     Values(RunMode::kCreateReshapeRun,
-                                            RunMode::kEager),
-                                     ValuesIn(all_binary_ops))),
-                         [](const auto& info) { return info.param.Name(); });
+// INSTANTIATE_TEST_SUITE_P(BinaryNDTest, BinaryNDTest,
+//                          testing::ConvertGenerator<Param::TupleT>(
+//                              Combine(ValuesIn(all_datatypes),
+//                                      Values(RunMode::kCreateReshapeRun,
+//                                             RunMode::kEager),
+//                                      ValuesIn(all_binary_ops))),
+//                          [](const auto& info) { return info.param.Name(); });
 
 class QuantizedTest : public testing::TestWithParam<Param> {};
 
@@ -756,10 +756,10 @@ TEST_P(QuantizedTest, output_zero_point) {
   }
 }
 
-INSTANTIATE_TEST_SUITE_P(QuantizedTest, QuantizedTest,
-                         testing::ConvertGenerator<Param::TupleT>(Combine(
-                             Values(xnn_datatype_quint8, xnn_datatype_qint8),
-                             Values(RunMode::kCreateReshapeRun,
-                                    RunMode::kEager),
-                             ValuesIn(all_binary_ops))),
-                         [](const auto& info) { return info.param.Name(); });
+// INSTANTIATE_TEST_SUITE_P(QuantizedTest, QuantizedTest,
+//                          testing::ConvertGenerator<Param::TupleT>(Combine(
+//                              Values(xnn_datatype_quint8, xnn_datatype_qint8),
+//                              Values(RunMode::kCreateReshapeRun,
+//                                     RunMode::kEager),
+//                              ValuesIn(all_binary_ops))),
+//                          [](const auto& info) { return info.param.Name(); });

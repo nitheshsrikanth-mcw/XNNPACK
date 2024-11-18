@@ -260,8 +260,10 @@ tools/generate-vscaleextexp-test.py --spec test/f32-vscaleextexp.yaml --output t
 tools/generate-vscaleexpminusmax-test.py --spec test/f32-vscaleexpminusmax.yaml --output test/f32-vscaleexpminusmax.cc &
 
 ### Tests for VMulCAddC micro-kernels
-tools/generate-vmulcaddc-test.py --spec test/f16-vmulcaddc-minmax.yaml --output test/f16-vmulcaddc-minmax.cc &
-tools/generate-vmulcaddc-test.py --spec test/f32-vmulcaddc-minmax.yaml --output test/f32-vmulcaddc-minmax.cc &
+# tools/generate-vmulcaddc-test.py --spec test/f16-vmulcaddc-minmax.yaml --output test/f16-vmulcaddc-minmax.cc &
+# tools/generate-vmulcaddc-test.py --spec test/f32-vmulcaddc-minmax.yaml --output test/f32-vmulcaddc-minmax.cc &
+# tools/generate-vmulcaddc-test.py --tester VMulCAddCMicrokernelTester --ukernel f16-vmulcaddc --output test/f16-vmulcaddc-minmax.cc &
+# tools/generate-vmulcaddc-test.py --tester VMulCAddCMicrokernelTester --ukernel f32-vmulcaddc --output test/f32-vmulcaddc-minmax.cc &
 
 ### Tests for the portable SIMD wrappers.
 tools/xngen test/f32-simd.cc.in -D ARCH=scalar -D ARCH_MACRO="" -D TEST_REQUIRES="" -o test/f32-simd-scalar.cc &

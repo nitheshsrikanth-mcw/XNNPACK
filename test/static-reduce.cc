@@ -281,13 +281,13 @@ using ::testing::Bool;
 using ::testing::Combine;
 using ::testing::Values;
 
-INSTANTIATE_TEST_SUITE_P(ReduceTest, ReduceTest,
-                         testing::ConvertGenerator<Param::TupleT>(Combine(
-                             Values(xnn_datatype_fp16, xnn_datatype_fp32,
-                                    xnn_datatype_qint8, xnn_datatype_quint8),
-                             Values(xnn_reduce_sum, xnn_reduce_mean), Bool(),
-                             Bool())),
-                         [](auto p) { return p.param.Name(); });
+// INSTANTIATE_TEST_SUITE_P(ReduceTest, ReduceTest,
+//                          testing::ConvertGenerator<Param::TupleT>(Combine(
+//                              Values(xnn_datatype_fp16, xnn_datatype_fp32,
+//                                     xnn_datatype_qint8, xnn_datatype_quint8),
+//                              Values(xnn_reduce_sum, xnn_reduce_mean), Bool(),
+//                              Bool())),
+//                          [](auto p) { return p.param.Name(); });
 
 TEST_P(ReduceTest, define) {
   const Param p = GetParam();

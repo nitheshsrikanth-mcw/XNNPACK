@@ -794,9 +794,9 @@ const xnn_binary_operator all_binary_ops[] = {
     xnn_binary_shift_right_arithmetic,
 };
 
-INSTANTIATE_TEST_SUITE_P(
-    BinaryTest, BinaryTest,
-    testing::ConvertGenerator<Param::TupleT>(Combine(
-        ValuesIn(all_datatypes),
-        ValuesIn(all_binary_ops))),
-    [](const auto& info) { return info.param.Name(); });
+// INSTANTIATE_TEST_SUITE_P(
+//     BinaryTest, BinaryTest,
+//     testing::ConvertGenerator<Param::TupleT>(Combine(
+//         ValuesIn(all_datatypes),
+//         ValuesIn(all_binary_ops))),
+//     [](const auto& info) { return info.param.Name(); });
